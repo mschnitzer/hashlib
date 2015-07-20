@@ -16,3 +16,6 @@ https://www.mschnitzer.de/downloads/samp/hashlib/release/last/hashlib.inc
 2. Make your changes
 3. Make a pull request
 4. Your changes will be reviewed as soon as possible. (Take a cup of tea)
+
+### Thanks to
+ - zedwood.com for providing the hashing libraries
