@@ -16,6 +16,9 @@
     <Filter Include="Headerdateien\amx">
       <UniqueIdentifier>{dda84783-2d39-49f2-9c03-fe7b9a079962}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\include">
+      <UniqueIdentifier>{7a21d424-54e6-497b-897c-fd0f9236262f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AmxUtils.h">
@@ -48,6 +51,12 @@
     <ClInclude Include="Natives.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="nessie.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="whirlpool.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="amxplugin.cpp">
@@ -71,10 +80,16 @@
     <ClCompile Include="Base64.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="whirlpool.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hashlib.def">
       <Filter>Quelldateien</Filter>
+    </None>
+    <None Include="include\hashlib.inc">
+      <Filter>Headerdateien\include</Filter>
     </None>
   </ItemGroup>
 </Project>

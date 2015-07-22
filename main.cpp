@@ -12,6 +12,7 @@
 #include "sha2.h"
 #include "AmxUtils.h"
 #include "Base64.h"
+#include "whirlpool.h"
 #include "Natives.h"
 
 typedef void(*logprintf_t)(char* format, ...);
@@ -50,6 +51,7 @@ AMX_NATIVE_INFO PluginNatives[] =
 	{ "hashlib_sha256", hashlib_sha256 },
 	{ "hashlib_sha384", hashlib_sha384 },
 	{ "hashlib_sha512", hashlib_sha512 },
+	{ "hashlib_whirlpool", hashlib_whirlpool },
 	{ "hashlib_generate_salt", hashlib_generate_salt },
 	{ "hashlib_base64_encode", hashlib_base64_encode },
 	{ "hashlib_base64_decode", hashlib_base64_decode },

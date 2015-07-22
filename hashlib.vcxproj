@@ -83,10 +83,12 @@
     <ClInclude Include="Base64.h" />
     <ClInclude Include="md5.h" />
     <ClInclude Include="Natives.h" />
+    <ClInclude Include="nessie.h" />
     <ClInclude Include="plugincommon.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="sha1.h" />
     <ClInclude Include="sha2.h" />
+    <ClInclude Include="whirlpool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="amxplugin.cpp" />
@@ -96,9 +98,11 @@
     <ClCompile Include="md5.cpp" />
     <ClCompile Include="sha1.cpp" />
     <ClCompile Include="sha2.cpp" />
+    <ClCompile Include="whirlpool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="hashlib.def" />
+    <None Include="include\hashlib.inc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

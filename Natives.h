@@ -82,6 +82,19 @@ cell AMX_NATIVE_CALL hashlib_sha512(AMX* amx, cell* params)
 	return 1;
 }
 
+cell AMX_NATIVE_CALL hashlib_whirlpool(AMX* amx, cell* params)
+{
+	std::string str = AmxUtils::amx_GetStdString(amx, &params[1]);
+	std::string salt = AmxUtils::amx_GetStdString(amx, &params[2]);
+
+	cell *addr = NULL;
+
+	amx_GetAddr(amx, params[3], &addr);
+	amx_SetString(addr, whirlpool(salt + str).c_str(), 0, 0, params[4]);
+
+	return 1;
+}
+
 cell AMX_NATIVE_CALL hashlib_generate_salt(AMX* amx, cell* params)
 {
 	cell *addr = NULL;
