@@ -11,6 +11,7 @@
 #define MAX_SHA256_LEN 64
 #define MAX_SHA384_LEN 96
 #define MAX_SHA512_LEN 128
+#define MAX_WHIRLPOOL_LEN 128
 
 native hashlib_md5(str[], salt[], out[], out_len);
 native hashlib_sha1(str[], salt[], out[], out_len);
