@@ -48,9 +48,6 @@
     <ClInclude Include="Base64.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Natives.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="nessie.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
