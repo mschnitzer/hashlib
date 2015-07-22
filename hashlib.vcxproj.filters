@@ -42,6 +42,12 @@
     <ClInclude Include="amx\sclinux.h">
       <Filter>Headerdateien\amx</Filter>
     </ClInclude>
+    <ClInclude Include="Base64.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Natives.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="amxplugin.cpp">
@@ -60,6 +66,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="sha2.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Base64.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

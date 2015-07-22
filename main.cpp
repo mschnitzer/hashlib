@@ -11,109 +11,12 @@
 #include "sha1.h"
 #include "sha2.h"
 #include "AmxUtils.h"
+#include "Base64.h"
+#include "Natives.h"
 
 typedef void(*logprintf_t)(char* format, ...);
 logprintf_t logprintf;
 extern void *pAMXFunctions;
-
-cell AMX_NATIVE_CALL hashlib_md5(AMX* amx, cell* params)
-{
-	std::string str = AmxUtils::amx_GetStdString(amx, &params[1]);
-	std::string salt = AmxUtils::amx_GetStdString(amx, &params[2]);
-	
-	cell *addr = NULL;
-	
-	amx_GetAddr(amx, params[3], &addr);
-	amx_SetString(addr, md5(salt + str).c_str(), 0, 0, params[4]);
-	
-	return 1;
-}
-
-cell AMX_NATIVE_CALL hashlib_sha1(AMX* amx, cell* params)
-{
-	std::string str = AmxUtils::amx_GetStdString(amx, &params[1]);
-	std::string salt = AmxUtils::amx_GetStdString(amx, &params[2]);
-	
-	cell *addr = NULL;
-	
-	amx_GetAddr(amx, params[3], &addr);
-	amx_SetString(addr, sha1(salt + str).c_str(), 0, 0, params[4]);
-	
-	return 1;
-}
-
-cell AMX_NATIVE_CALL hashlib_sha224(AMX* amx, cell* params)
-{
-	std::string str = AmxUtils::amx_GetStdString(amx, &params[1]);
-	std::string salt = AmxUtils::amx_GetStdString(amx, &params[2]);
-	
-	cell *addr = NULL;
-	
-	amx_GetAddr(amx, params[3], &addr);
-	amx_SetString(addr, sha224(salt + str).c_str(), 0, 0, params[4]);
-	
-	return 1;
-}
-
-cell AMX_NATIVE_CALL hashlib_sha256(AMX* amx, cell* params)
-{
-	std::string str = AmxUtils::amx_GetStdString(amx, &params[1]);
-	std::string salt = AmxUtils::amx_GetStdString(amx, &params[2]);
-	
-	cell *addr = NULL;
-	
-	amx_GetAddr(amx, params[3], &addr);
-	amx_SetString(addr, sha256(str).c_str(), 0, 0, params[4]);
-	
-	return 1;
-}
-
-cell AMX_NATIVE_CALL hashlib_sha384(AMX* amx, cell* params)
-{
-	std::string str = AmxUtils::amx_GetStdString(amx, &params[1]);
-	std::string salt = AmxUtils::amx_GetStdString(amx, &params[2]);
-	
-	cell *addr = NULL;
-	
-	amx_GetAddr(amx, params[3], &addr);
-	amx_SetString(addr, sha384(salt + str).c_str(), 0, 0, params[4]);
-	
-	return 1;
-}
-
-cell AMX_NATIVE_CALL hashlib_sha512(AMX* amx, cell* params)
-{
-	std::string str = AmxUtils::amx_GetStdString(amx, &params[1]);
-	std::string salt = AmxUtils::amx_GetStdString(amx, &params[2]);
-	
-	cell *addr = NULL;
-	
-	amx_GetAddr(amx, params[3], &addr);
-	amx_SetString(addr, sha512(salt + str).c_str(), 0, 0, params[4]);
-	
-	return 1;
-}
-
-cell AMX_NATIVE_CALL hashlib_generate_salt(AMX* amx, cell* params)
-{
-	cell *addr = NULL;
-	std::string rstr;
-	std::string chars = "aAbB0c9CdDeE8!fFgGhH7iIj/JkK:6lLmMn5N;oOpP4qQr.RsSt+3TuUv-'Vw12WxXyYzZ";
-	
-	srand(time(NULL));
-	int num = 0;
-	
-	for (int i = 0; i < 100; i++)
-	{
-		num = rand() % chars.length();
-		rstr += chars[num];
-	}
-	
-	amx_GetAddr(amx, params[1], &addr);
-	amx_SetString(addr, sha1(rstr).c_str(), 0, 0, params[2]);
-	
-	return 1;
-}
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports()
 {
@@ -128,7 +31,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData)
 	logprintf(" --------------------------------------------------------");
 	logprintf(" hashlib version %s successfully loaded!", PLUGIN_VERSION);
 	logprintf(" Developer: Manuel Schnitzer");
-	logprintf(" Website: https://github.com/mschnitzer/samp-hashlib");
+	logprintf(" Website: https://github.com/mschnitzer/hashlib");
 	logprintf(" --------------------------------------------------------");
 
 	return true;
@@ -148,6 +51,8 @@ AMX_NATIVE_INFO PluginNatives[] =
 	{ "hashlib_sha384", hashlib_sha384 },
 	{ "hashlib_sha512", hashlib_sha512 },
 	{ "hashlib_generate_salt", hashlib_generate_salt },
+	{ "hashlib_base64_encode", hashlib_base64_encode },
+	{ "hashlib_base64_decode", hashlib_base64_decode },
 	{ 0, 0 }
 };
 
