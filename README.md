@@ -1,4 +1,6 @@
 # hashlib
+[![Build Status](https://api.travis-ci.org/mschnitzer/hashlib.svg?branch=master)](https://travis-ci.org/mschnitzer/hashlib/)
+
 A hashing library for SA:MP.
 
 ### Download
