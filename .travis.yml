@@ -1,0 +1,12 @@
+language: cpp
+compiler:
+    - g++
+before_install:
+    - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+    - sudo apt-get -qq update
+    - sudo apt-get -qq install -yfm libc6-dev-i386 g++-4.7-multilib cmake
+    - sudo apt-get -qq install -yf libicu48:i386
+    - sudo apt-get -qq install -yf libicu-dev:i386
+    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.7 99 --slave /usr/bin/g++ g++ /usr/bin/g++-4.7
+script:
+    - make
