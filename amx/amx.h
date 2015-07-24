@@ -24,6 +24,8 @@
 #ifndef AMX_H_INCLUDED
 #define AMX_H_INCLUDED
 
+#define HAVE_STDINT_H
+
 #if defined __linux || defined __linux__
 #define __LINUX__
 #endif

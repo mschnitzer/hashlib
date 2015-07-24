@@ -1,6 +1,7 @@
 #include <iostream>
 #ifdef _WIN32
 #include <time.h>
+#include <windows.h>
 #else
 #include <stdlib.h>
 #endif
@@ -13,6 +14,10 @@
 #include "AmxUtils.h"
 #include "Base64.h"
 #include "whirlpool.h"
+
+#ifdef _WIN32
+#pragma comment(lib, "advapi32.lib")
+#endif
 
 typedef void(*logprintf_t)(char* format, ...);
 logprintf_t logprintf;
@@ -111,6 +116,44 @@ cell AMX_NATIVE_CALL hashlib_whirlpool(AMX* amx, cell* params)
 
 cell AMX_NATIVE_CALL hashlib_generate_salt(AMX* amx, cell* params)
 {
+	int len = params[3];
+
+	if (len < 512) len = 512;
+	if (len > 2048) len = 2048;
+
+#ifdef _WIN32
+	HCRYPTPROV hProvider = 0;
+
+	if (!::CryptAcquireContextW(&hProvider, 0, 0, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT | CRYPT_SILENT))
+	{
+		logprintf("[ERROR] hashlib: CryptAcquireContextW failed!");
+		return 0;
+	}
+
+	BYTE *rbytes = new BYTE[len];
+
+	if (!::CryptGenRandom(hProvider, len, rbytes))
+	{
+		logprintf("[ERROR] hashlib: CryptGenRandom failed! Could not generate random bytes!");
+		::CryptReleaseContext(hProvider, 0);
+		return 0;
+	}
+
+	std::string out(reinterpret_cast<char const*>(rbytes), len);
+
+	cell *addr = NULL;
+
+	amx_GetAddr(amx, params[1], &addr);
+	amx_SetString(addr, sha224(out).c_str(), 0, 0, params[2]);
+
+	if (!::CryptReleaseContext(hProvider, 0))
+	{
+		logprintf("[ERROR] hashlib: CryptReleaseContext failed!");
+		return 0;
+	}
+	
+	return 1;
+#else
 	cell *addr = NULL;
 	std::string rstr;
 	std::string chars = "aAbB0c9CdDeE8!fFgGhH7iIj/JkK:6lLmMn5N;oOpP4qQr.RsSt+3TuUv-'Vw12WxXyYzZ";
@@ -128,6 +171,7 @@ cell AMX_NATIVE_CALL hashlib_generate_salt(AMX* amx, cell* params)
 	amx_SetString(addr, sha1(rstr).c_str(), 0, 0, params[2]);
 
 	return 1;
+#endif
 }
 
 cell AMX_NATIVE_CALL hashlib_base64_encode(AMX* amx, cell* params)
@@ -186,7 +230,7 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload()
 	logprintf(" * hashlib was unloaded.");
 }
 
-AMX_NATIVE_INFO PluginNatives[] =
+extern "C" const AMX_NATIVE_INFO PluginNatives[] =
 {
 	{ "hashlib_md5", hashlib_md5 },
 	{ "hashlib_sha1", hashlib_sha1 },
