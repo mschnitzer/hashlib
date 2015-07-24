@@ -20,6 +20,6 @@ native hashlib_sha256(str[], salt[], out[], out_len);
 native hashlib_sha384(str[], salt[], out[], out_len);
 native hashlib_sha512(str[], salt[], out[], out_len);
 native hashlib_whirlpool(str[], salt[], out[], out_len);
-native hashlib_generate_salt(out[], out_len, random_bytes_len = 512);
+native hashlib_generate_salt(out[], out_len, random_bytes_len = 2048);
 native hashlib_base64_encode(str[], out[], out_len);
 native hashlib_base64_decode(str[], out[], out_len);

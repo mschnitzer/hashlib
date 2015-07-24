@@ -121,7 +121,7 @@ cell AMX_NATIVE_CALL hashlib_generate_salt(AMX* amx, cell* params)
 	int len = params[3];
 
 	if (len < 512) len = 512;
-	if (len > 2048) len = 2048;
+	if (len > 4096) len = 4096;
 
 #ifdef _WIN32
 	HCRYPTPROV hProvider = 0;
