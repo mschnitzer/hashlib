@@ -4,6 +4,8 @@
 #include <windows.h>
 #else
 #include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 #endif
 #include "amx/amx.h"
 #include "plugincommon.h"
@@ -135,7 +137,10 @@ cell AMX_NATIVE_CALL hashlib_generate_salt(AMX* amx, cell* params)
 	if (!::CryptGenRandom(hProvider, len, rbytes))
 	{
 		logprintf("[ERROR] hashlib: CryptGenRandom failed! Could not generate random bytes!");
+
 		::CryptReleaseContext(hProvider, 0);
+        delete[] rbytes;
+
 		return 0;
 	}
 
@@ -149,28 +154,36 @@ cell AMX_NATIVE_CALL hashlib_generate_salt(AMX* amx, cell* params)
 	if (!::CryptReleaseContext(hProvider, 0))
 	{
 		logprintf("[ERROR] hashlib: CryptReleaseContext failed!");
+        delete[] rbytes;
+
 		return 0;
 	}
-	
+
 	return 1;
 #else
+    char *rbytes = new char[len];
+
+    int f = open("/dev/random", O_RDONLY);
+    if (!f)
+    {
+        logprintf("[ERROR] hashlib: Could not open /dev/random!");
+        delete[] rbytes;
+
+        return 0;
+    }
+
+    read(f, rbytes, sizeof(rbytes));
+    close(f);
+
+    std::string out = std::string(rbytes);
+
 	cell *addr = NULL;
-	std::string rstr;
-	std::string chars = "aAbB0c9CdDeE8!fFgGhH7iIj/JkK:6lLmMn5N;oOpP4qQr.RsSt+3TuUv-'Vw12WxXyYzZ";
-
-	srand(time(NULL));
-	int num = 0;
-
-	for (int i = 0; i < 100; i++)
-	{
-		num = rand() % chars.length();
-		rstr += chars[num];
-	}
 
 	amx_GetAddr(amx, params[1], &addr);
-	amx_SetString(addr, sha1(rstr).c_str(), 0, 0, params[2]);
+	amx_SetString(addr, sha224(out).c_str(), 0, 0, params[2]);
 
-	return 1;
+    delete[] rbytes;
+    return 1;
 #endif
 }
 
