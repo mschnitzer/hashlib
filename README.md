@@ -23,7 +23,7 @@ hashlib_generate_salt(salt, sizeof(salt));
 hashlib_whirlpool(password, salt, hashed_password, sizeof(hashed_password));
 ```
 
-The important thing here is, you have to save the salt with the hashed password in your database. Each user should become a unique salt. If the user want to log in into his account, you fetch his salt from the database and hash his entered password with the hash.
+The important thing here is, you have to save the salt with the hashed password in your database. Each user should become a unique salt. If the user want to log in into his account, you fetch his salt from the database and hash his entered password with his salt.
 
 ```
 new hashed_plaintext_password[MAX_WHIRLPOOL_LEN];
