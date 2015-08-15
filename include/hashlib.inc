@@ -4,14 +4,14 @@
  * https://github.com/mschnitzer/hashlib
  */
 
-#define MAX_SALT_LEN 56
-#define MAX_MD5_LEN 32
-#define MAX_SHA1_LEN 40
-#define MAX_SHA224_LEN 56
-#define MAX_SHA256_LEN 64
-#define MAX_SHA384_LEN 96
-#define MAX_SHA512_LEN 128
-#define MAX_WHIRLPOOL_LEN 128
+#define MAX_SALT_LEN 57
+#define MAX_MD5_LEN 33
+#define MAX_SHA1_LEN 41
+#define MAX_SHA224_LEN 57
+#define MAX_SHA256_LEN 65
+#define MAX_SHA384_LEN 97
+#define MAX_SHA512_LEN 129
+#define MAX_WHIRLPOOL_LEN 129
 
 // hashing functions (used for hashing sensitive data like passwords)
 native hashlib_md5(str[], salt[], out[], out_len);
