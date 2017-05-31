@@ -16,6 +16,7 @@
 #include "AmxUtils.h"
 #include "Base64.h"
 #include "whirlpool.h"
+#include "bcrypt.h"
 
 #ifdef _WIN32
 #pragma comment(lib, "advapi32.lib")
@@ -114,6 +115,39 @@ cell AMX_NATIVE_CALL hashlib_whirlpool(AMX* amx, cell* params)
 	amx_SetString(addr, whirlpool(salt + str).c_str(), 0, 0, params[4]);
 
 	return 1;
+}
+
+cell AMX_NATIVE_CALL hashlib_bcrypt(AMX* amx, cell* params)
+{
+	std::string input = AmxUtils::amx_GetStdString(amx, &params[1]);
+    int cost_factor = params[4];
+
+    if (cost_factor < 4 || cost_factor > 31)
+    {
+       logprintf("[ERROR] hashlib: The cost factor for hashlib_bcrypt() can only be between 4 and 31!");
+       return 0;
+    }
+
+	cell *addr = NULL;
+
+    char hash[BCRYPT_HASHSIZE] = { 0 };
+    char salt[BCRYPT_HASHSIZE] = { 0 };
+
+    bcrypt_gensalt(cost_factor, salt);
+    bcrypt_hashpw(input.c_str(), salt, hash);
+
+	amx_GetAddr(amx, params[2], &addr);
+	amx_SetString(addr, hash, 0, 0, params[3]);
+
+	return 1;
+}
+
+cell AMX_NATIVE_CALL hashlib_bcrypt_compare(AMX* amx, cell* params)
+{
+	std::string provided = AmxUtils::amx_GetStdString(amx, &params[1]);
+	std::string expected = AmxUtils::amx_GetStdString(amx, &params[2]);
+
+	return (bcrypt_checkpw(provided.c_str(), expected.c_str()) == 0);
 }
 
 cell AMX_NATIVE_CALL hashlib_generate_salt(AMX* amx, cell* params)
@@ -252,6 +286,8 @@ extern "C" const AMX_NATIVE_INFO PluginNatives[] =
 	{ "hashlib_sha384", hashlib_sha384 },
 	{ "hashlib_sha512", hashlib_sha512 },
 	{ "hashlib_whirlpool", hashlib_whirlpool },
+	{ "hashlib_bcrypt", hashlib_bcrypt },
+	{ "hashlib_bcrypt_compare", hashlib_bcrypt_compare },
 	{ "hashlib_generate_salt", hashlib_generate_salt },
 	{ "hashlib_base64_encode", hashlib_base64_encode },
 	{ "hashlib_base64_decode", hashlib_base64_decode },
